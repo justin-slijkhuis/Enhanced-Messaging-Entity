@@ -10,8 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.java.Log;
-
 import java.io.IOException;
 import java.net.URI;
 

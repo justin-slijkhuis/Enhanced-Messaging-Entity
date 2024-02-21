@@ -10,7 +10,7 @@ import com.neovisionaries.ws.client.WebSocketFrame;
 import com.neovisionaries.ws.client.WebSocketListener;
 import com.neovisionaries.ws.client.WebSocketState;
 
-import eme.api.json.message.DiscordMessage;
+import eme.api.json.message.receive.DiscordMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -133,8 +133,8 @@ public class WorkerListener implements WebSocketListener {
 
     @Override
     public void onTextMessage(WebSocket webSocket, String message) throws Exception {
-        log.info(message);
         DiscordMessage discordMessage = WorkerService.convertToDiscordMessage(message);
+        log.info(discordMessage.toString());
         discordMessage.execute(worker, webSocket);
     }
 

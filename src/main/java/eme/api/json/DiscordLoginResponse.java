@@ -2,7 +2,6 @@ package eme.api.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import eme.api.json.sub.DiscordUserSettingsResponse;
 import lombok.Data;
 
 @Data

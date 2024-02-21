@@ -3,7 +3,7 @@ package eme.worker;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import eme.api.json.message.DiscordMessage;
+import eme.api.json.message.receive.DiscordMessage;
 import lombok.extern.java.Log;
 
 @Log

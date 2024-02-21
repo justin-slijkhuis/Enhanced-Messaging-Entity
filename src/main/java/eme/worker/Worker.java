@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketFactory;
 
-import eme.api.json.message.sub.DiscordOp0;
+import eme.api.json.message.receive.DiscordOp0;
 import eme.utils.Urls;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,9 @@ public class Worker {
 
     @Setter
     private DiscordOp0 workerInfo;
+
+    private int heartbeat = 0;
+    private int sequence = 0;
 
     public void start() {
         try {
