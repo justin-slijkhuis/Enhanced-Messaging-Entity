@@ -2,8 +2,6 @@ package eme.api.json.message.receive;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neovisionaries.ws.client.WebSocket;
@@ -12,15 +10,6 @@ import eme.worker.Worker;
 import lombok.Data;
 
 @Data
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "op"
-)
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = DiscordOp0.class, name = "0"),
-    @JsonSubTypes.Type(value = DiscordOp9.class, name = "9"),
-    @JsonSubTypes.Type(value = DiscordOp10.class, name = "10"),
-})
 public abstract class DiscordMessage {
 
     @JsonIgnore

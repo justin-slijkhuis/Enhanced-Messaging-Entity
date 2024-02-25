@@ -22,27 +22,27 @@ public class WorkerListener implements WebSocketListener {
 
     @Override
     public void handleCallbackError(WebSocket webSocket, Throwable throwable) throws Exception {
-        log.warning("handleCallbackError");
+        // Not needed
     }
 
     @Override
     public void onBinaryFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onBinaryFrame");
+        // Not needed
     }
 
     @Override
     public void onBinaryMessage(WebSocket webSocket, byte[] bytes) throws Exception {
-        log.warning("onBinaryMessage");
+        // Not needed
     }
 
     @Override
     public void onCloseFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onCloseFrame");
+        // Not needed
     }
 
     @Override
     public void onConnectError(WebSocket webSocket, WebSocketException exception) throws Exception {
-        log.warning("onConnectError");
+        // Not needed
     }
 
     @Override
@@ -52,7 +52,7 @@ public class WorkerListener implements WebSocketListener {
 
     @Override
     public void onContinuationFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onContinuationFrame");
+        // Not needed
     }
 
     @Override
@@ -63,109 +63,109 @@ public class WorkerListener implements WebSocketListener {
 
     @Override
     public void onError(WebSocket webSocket, WebSocketException exception) throws Exception {
-        log.warning("onError");
+        // Not needed
     }
 
     @Override
     public void onFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onFrame");
+        // Not needed
     }
 
     @Override
     public void onFrameError(WebSocket webSocket, WebSocketException exception, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onFrameError");
+        // Not needed
     }
 
     @Override
     public void onFrameSent(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onFrameSent");
+        // Not needed
     }
 
     @Override
     public void onFrameUnsent(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onFrameUnsent");
+        // Not needed
     }
 
     @Override
     public void onMessageDecompressionError(WebSocket webSocket, WebSocketException exception, byte[] bytes) throws Exception {
-        log.warning("onMessageDecompressionError");
+        // Not needed
     }
 
     @Override
     public void onMessageError(WebSocket webSocket, WebSocketException exception, List<WebSocketFrame> webSocketFrames) throws Exception {
-        log.warning("onMessageError");
+        // Not needed
     }
 
     @Override
     public void onPingFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onPingFrame");
+        // Not needed
     }
 
     @Override
     public void onPongFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onPongFrame");
+        // Not needed
     }
 
     @Override
     public void onSendError(WebSocket webSocket, WebSocketException exception, WebSocketFrame arg2) throws Exception {
-        log.warning("onSendError");
+        // Not needed
     }
 
     @Override
     public void onSendingFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onSendingFrame");
+        // Not needed
     }
 
     @Override
     public void onSendingHandshake(WebSocket webSocket, String request, List<String[]> headers) throws Exception {
-        log.warning("onSendingHandshake");
+        // Not needed
     }
 
     @Override
     public void onStateChanged(WebSocket webSocket, WebSocketState webSocketFrame) throws Exception {
-        log.warning("onStateChanged");
+        // Not needed
     }
 
     @Override
     public void onTextFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-        log.warning("onTextFrame");
+        // Not needed
     }
 
     @Override
     public void onTextMessage(WebSocket webSocket, String message) throws Exception {
-        DiscordMessage discordMessage = WorkerService.convertToDiscordMessage(message);
-        log.info(discordMessage.toString());
+        log.info(message);
+        DiscordMessage discordMessage = worker.getWorkerService().convertToDiscordMessage(message);
         discordMessage.execute(worker, webSocket);
     }
 
     @Override
     public void onTextMessage(WebSocket webSocket, byte[] bytes) throws Exception {
-        log.warning("onTextMessage");
+        // Not needed
     }
 
     @Override
     public void onTextMessageError(WebSocket webSocket, WebSocketException exception, byte[] bytes) throws Exception {
-        log.warning("onTextMessageError");
+        // Not needed
     }
 
     @Override
     public void onThreadCreated(WebSocket webSocket, ThreadType threadType, Thread thread) throws Exception {
-        log.warning("onThreadCreated");
+        // Not needed
     }
 
     @Override
     public void onThreadStarted(WebSocket webSocket, ThreadType threadType, Thread thread) throws Exception {
-        log.warning("onThreadStarted");
+        // Not needed
     }
 
     @Override
     public void onThreadStopping(WebSocket webSocket, ThreadType threadType, Thread thread) throws Exception {
-        log.warning("onThreadStopping");
+        // Not needed
     }
 
     @Override
     public void onUnexpectedError(WebSocket webSocket, WebSocketException exception) throws Exception {
-        log.warning("onUnexpectedError");
+        // Not needed
     }
     
 }

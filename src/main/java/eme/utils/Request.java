@@ -49,6 +49,26 @@ public class Request {
         return sendRequest(request);
     }
 
+    public static String sendPostRequest(String url, Object json, String token) {
+
+        String jsonInputString;
+        try {
+            jsonInputString = OBJECT_MAPPER.writeValueAsString(json);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to convert object to json", e);
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .header("Authorization", token)
+                .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
+                .build();
+
+        return sendRequest(request);
+    }
+
     private static String sendRequest(HttpRequest request) {
         HttpClient client = HttpClient.newHttpClient();
 

@@ -9,11 +9,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import eme.api.json.message.receive.zero.sub.DiscordOp0ReadyElement;
 
-public class DiscordOp0Deserializer extends JsonDeserializer<DiscordOp0ReadyElement[]> {
+public class DiscordOp0ReadyDeserializer extends JsonDeserializer<DiscordOp0ReadyElement[]> {
+
     @Override
 	public DiscordOp0ReadyElement[] deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-		
 		JsonNode node = p.getCodec().readTree( p );
+		
 		if ( node.isArray() ) {
 			return p.getCodec().treeToValue( node, DiscordOp0ReadyElement[].class );
 		} else {

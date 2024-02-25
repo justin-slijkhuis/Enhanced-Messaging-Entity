@@ -3,17 +3,13 @@ package eme.api.json.message.receive.zero;
 import com.neovisionaries.ws.client.WebSocket;
 
 import eme.api.json.message.receive.DiscordOp0;
-import eme.api.json.message.receive.zero.general.DiscordOp0Message;
+import eme.api.json.message.receive.zero.general.DiscordOp0UserInfo;
 import eme.worker.Worker;
-import lombok.Data;
-import lombok.extern.java.Log;
 
-@Log
-@Data
-public class DiscordOp0MessageUpdate extends DiscordOp0 {
+public class DiscordOp0PresenceUpdate extends DiscordOp0 {
 
-    DiscordOp0Message d;
-
+    DiscordOp0UserInfo d;
+    
     public void execute(Worker worker, WebSocket webSocket) {
     }
 }
