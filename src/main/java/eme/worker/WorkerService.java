@@ -2,6 +2,7 @@ package eme.worker;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,39 +52,51 @@ public class WorkerService {
         log.info("Sent heartbeat for id: " + worker.getUuid());
     }
 
-    public void sendMessage(String channelId, DiscordContent message) {
+    public void sendMessage(String channelId, String input) {
+        DiscordContent message = new DiscordContent(input);
+        // TODO: Implement typing delay
         Request.sendPostRequest(Urls.getChannelMessageUrl(channelId), message, worker.getToken());
     }
 
-    public String handleMessageInput(String input, String sender) {
+    public boolean handleMessageInput(String input, String sender, String channelId) {
         List<WorkerSettingsMessageLine> messages = Arrays.asList(worker.getSettings().getMessages());
 
         WorkerSettingsMessageLine line = messages.stream()
-                .filter(message -> message.getInput().equals(input))
+                .filter(message -> message.getInput().equals(input) && (message.isSelf() || !worker.getDiscordId().equals(sender)))
                 .findFirst()
                 .orElse(null);
 
-        if (line != null && (line.isSelf() || !worker.getDiscordId().equals(sender))) {
-            return line.getResponse();
+        if (line == null) {
+            return false;
         }
 
-        return null;
+        sendMessage(channelId, line.getResponse());
+
+        return true;
     }
 
-    public String handleModuleInput(String input, String sender) {
-        if (sender.equals(worker.getDiscordId())) {
-            return null;
+    public boolean handleModuleInput(String input, String sender, String channelId) {
+        List<Entry<WorkerSettingsModuleLine, WorkerModule>> returnedEntryList = worker.getModules().entrySet().stream()
+                .filter(entry -> {
+                    WorkerSettingsModuleLine moduleLine = entry.getKey();
+                    WorkerModule workerModule = entry.getValue();
+
+                    if (!moduleLine.isSelf() && worker.getDiscordId().equals(sender)) {
+                        return false;
+                    }
+
+                    String commandStart = moduleLine.getCustomCommandStart() != null ? moduleLine.getCustomCommandStart() : worker.getSettings().getCommandStart();
+                    String combinedInput = commandStart + workerModule.getInput(worker, sender);
+                    return combinedInput.equals(input) || combinedInput.equals(commandStart + "FORCE");
+                })
+                .toList();
+
+        if (returnedEntryList.isEmpty()) {
+            return false;
         }
 
-        WorkerModule messageModule = worker.getModules().stream()
-                .filter(workerModule -> (worker.getSettings().getCommandStart() + workerModule.getInput()).equals(input))
-                .findFirst()
-                .orElse(null);
+        returnedEntryList.forEach(entry -> sendMessage(channelId, entry.getValue().getResponse(worker, entry.getKey())));
 
-        if (messageModule != null) {
-            return messageModule.getResponse(worker);
-        }
-
-        return null;
+        return true;
     }
 }

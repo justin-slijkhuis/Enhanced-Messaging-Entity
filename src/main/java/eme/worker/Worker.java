@@ -1,10 +1,11 @@
 package eme.worker;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,15 +15,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketFactory;
 
-import eme.api.json.message.receive.DiscordOp0;
-import eme.api.json.message.send.DiscordContent;
+import eme.api.json.message.receive.zero.DiscordOp0Ready;
 import eme.utils.Urls;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.extern.java.Log;
 
-@Log
 @Getter
 @RequiredArgsConstructor
 public class Worker {
@@ -37,7 +35,7 @@ public class Worker {
     private String discordId;
 
     @Setter
-    private DiscordOp0 workerInfo;
+    private DiscordOp0Ready workerInfo;
 
     @Setter
     private int heartbeat = 0;
@@ -48,8 +46,9 @@ public class Worker {
     private Timer continueTimer;
 
     private WorkerService workerService = new WorkerService(this);
+    private WorkerDataService workerDataService = new WorkerDataService(this);
 
-    private List<WorkerModule> modules = new ArrayList<>();
+    private Map<WorkerSettingsModuleLine, WorkerModule> modules = new HashMap<>();
 
     public void start() {
         try {
@@ -88,28 +87,13 @@ public class Worker {
     }
 
     public void handleMessage(String channelId, String input, String sender) {
-        String response = workerService.handleModuleInput(input, sender);
+        boolean moduleFound = workerService.handleModuleInput(input, sender, channelId);
 
-        if (response == null) {
-            response = workerService.handleMessageInput(input, sender);
+        if (moduleFound) {
+            return; 
         }
 
-        DiscordContent content = new DiscordContent(response);
-        workerService.sendMessage(channelId, content);
-    }
-
-    public boolean checkDataFile() {
-        File file = new File("src/main/java/eme/data/" + discordId + ".json");
-
-        if (!file.exists()) {
-            try {
-                return file.createNewFile();
-            } catch (Exception e) {
-                log.severe("Failed to create data file for id: " + discordId);
-            }
-        }
-
-        return true;
+        workerService.handleMessageInput(input, sender, channelId);
     }
 
     private void generateModules() {
@@ -123,7 +107,7 @@ public class Worker {
                     Constructor<? extends WorkerModule> constructor = module.getDeclaredConstructor();
                     WorkerModule instance = constructor.newInstance();
                     instance.setDisabled(moduleLine.getDisabled());
-                    modules.add(instance);
+                    modules.put(moduleLine, instance);
                 } catch (Exception e) {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unable to start work for module: " + moduleLine.getName());
                 }

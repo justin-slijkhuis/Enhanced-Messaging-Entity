@@ -37,6 +37,6 @@ public class DiscordOp0Ready extends DiscordOp0 {
         worker.setWorkerInfo(this);
         worker.setDiscordId(d[0].getUser().getId());
         worker.startHeartbeatInterval();
-        worker.checkDataFile();
+        worker.getWorkerDataService().validateFile();
     }
 }
